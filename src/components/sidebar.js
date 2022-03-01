@@ -2,7 +2,7 @@ import cn from 'classnames';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
-import useActiveView from '../hooks/useActiveView.js';
+import useActiveView from '../hooks/use-active-view.js';
 import views from '../lib/views.js';
 
 export default function Sidebar({ open, setOpen }) {

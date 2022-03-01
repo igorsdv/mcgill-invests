@@ -16,14 +16,17 @@ export default {
   military: {
     text: 'Military',
     icon: faFighterJet,
+    harmful: true,
   },
   oil: {
     text: 'Oil & Gas',
     icon: faTint,
+    harmful: true,
   },
   mining: {
     text: 'Mining & Extraction',
     icon: faWrench,
+    harmful: true,
   },
   alternative: {
     text: 'Alternative Energy',
@@ -36,5 +39,6 @@ export default {
   palestine: {
     text: 'Palestine Occupation',
     icon: faFlag,
+    harmful: true,
   },
 };

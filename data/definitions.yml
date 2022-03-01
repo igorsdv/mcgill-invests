@@ -1,5 +1,6 @@
 exclude:
   assetCategory:
+    - ''
     - CASH & CASH EQUIVALENTS
     - CONVERTIBLE OR EXCHANGEABLE SECURITIES
     - CONVERTIBLE SECURITIES
