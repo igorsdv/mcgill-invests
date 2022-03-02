@@ -2,7 +2,7 @@
   "name": "@mcgill-invests/website",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "NODE_OPTIONS='--inspect' next dev",
     "build": "rm -rf .cache/ && next build",
     "start": "next start",
     "lint": "next lint"

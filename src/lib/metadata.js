@@ -2,46 +2,11 @@ import yahooFinance from 'yahoo-finance2';
 import cache from './fs-cache.js';
 import sheets from './sheets.js';
 
-const suffixes = {
-  'Australia': 'AX',
-  'Belgium': 'BR',
-  'Bermuda': 'L',
-  'Canada': 'TO',
-  'Denmark': 'CO',
-  'Finland': 'HE',
-  'France': 'PA',
-  'Germany': 'DE',
-  'Hong Kong': 'HK', // pad to 4 digits
-  'Israel': 'TA',
-  'Italy': 'MI',
-  'Japan': 'T',
-  'Luxemburg': 'F',
-  'Mexico': 'MX',
-  'Netherlands': 'AS',
-  'New Zealand': 'NZ',
-  'Norway': 'OL',
-  'Portugal': 'LS',
-  'Spain': 'MC',
-  'Sweden': 'ST',
-  'Switzerland': 'VX',
-  'United Kingdom': 'L',
-};
+export function getBusinessProfile({ ticker }) {
+  return cache.getOrFetch(`ticker-${ticker}`, () => getQuoteSummary(ticker));
+}
 
-export async function getBusinessProfile({ ticker, country }) {
-  // for Canadian tickers like BAM/A
-  ticker = ticker.replace('/', '-');
-
-  // pad numeric tickers
-  if (!isNaN(ticker)) {
-    while (ticker.length < 4) {
-      ticker = '0' + ticker;
-    }
-  }
-
-  if (suffixes[country] !== undefined) {
-    ticker = `${ticker}.${suffixes[country]}`;
-  }
-
+async function getQuoteSummary(ticker) {
   console.log('Request ticker symbol', ticker);
 
   try {
@@ -51,13 +16,18 @@ export async function getBusinessProfile({ ticker, country }) {
 
     return {
       name: data.quoteType.longName || '',
-      description: data.summaryProfile?.longBusinessSummary || '',
+      symbol: data.quoteType.symbol,
+      description: Buffer.from(
+        data.summaryProfile?.longBusinessSummary || '',
+        'latin1'
+      ).toString(),
     };
   } catch (e) {
     console.error(e.message);
 
     return {
       name: '',
+      symbol: ticker,
       description: '',
     };
   }

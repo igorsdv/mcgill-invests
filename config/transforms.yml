@@ -1,0 +1,114 @@
+replace:
+  description1:
+    - search: ' 144A$'
+      replacement: ''
+
+  ticker:
+    - search: ' '
+      replacement: ''
+    - match:
+        country: [Canada, Australia]
+      search: ([A-Z]{2})CN$
+      replacement: '$1.TO'
+    - match:
+        country: [Canada]
+      search: /
+      replacement: '-'
+    - match:
+        country: [Thailand, United Kingdom]
+      search: /.*$
+      replacement: ''
+    - match:
+        country: [China, Hong Kong]
+      search: '^(\d{3})$'
+      replacement: 0$1
+    - match:
+        country: [Brazil]
+      search: (\d)$
+      replacement: '$1.SA'
+    - match:
+        country: [Sweden]
+      search: '^([A-Z]{3,})([AB])$'
+      replacement: '$1-$2'
+
+tickerSuffixes:
+  regex: '^[^.]+$'
+  suffixes:
+    Australia: .AX
+    Austria: .VI
+    Belgium: .BR
+    Canada: .TO
+    Chile: .SN
+    China: .HK
+    Czech Republic: .PR
+    Denmark: .CO
+    Finland: .HE
+    France: .PA
+    Germany: .DE
+    Greece: .AT
+    Hong Kong: .HK
+    Hungary: .BD
+    India: .NS
+    Indonedia: .JK
+    Israel: .TA
+    Italy: .MI
+    Japan: .T
+    Luxembourg: .PA
+    Malaysia: .KL
+    Mexico: .MX
+    Netherlands: .AS
+    New Zealand: .NZ
+    Norway: .OL
+    Philippines: .UNKNOWN
+    Poland: .WA
+    Portugal: .LS
+    Russia: .ME
+    Singapore: .SI
+    South Africa: .JO
+    South Korea: .KS
+    Spain: .MC
+    Supranational: .UNKNOWN
+    Sweden: .ST
+    Switzerland: .SW
+    Taiwan: .TW
+    Thailand: .BK
+    Turkey: .IS
+    United Kingdom: .L
+
+tickerMap:
+  ABXCN: ABX.TO
+  ACA.TO: AC.TO
+  ALF-A.ST: ALFA.ST
+  ANTO.SN: ANTO.L
+  ATD-B.TO: ATD.TO
+  AY.L: AY
+  BAMACN: BAM-A.TO
+  BAMREP.TO: BEPC
+  BBDB.TO: BBD-B.TO
+  BEP-U.TO: BEPC
+  BUFA-B.ST: BUFAB.ST
+  CONTXO.ST: CONTX.OL
+  CSIQ.TO: CSIQ
+  DBS.SI: D05.SI
+  EMACN: EMA.TO
+  ENBCN: ENB.TO
+  ENBGAS.TO: ENB.TO
+  ENBPIP.TO: ENB.TO
+  EXPN: EXPN.L
+  HDFCB.NS: HDB
+  HNDL.NS: HINDALCO.NS
+  HYDONE.TO: H.TO
+  IBESM.AS: IBE.MC
+  INX.AS: IMCD.AS
+  KSP: KRX.IR
+  LKOD.ME: LKOH.ME
+  LYC.KL: LYC.AX
+  NESNVX: NESN.SW
+  POG.ME: POGR.ME
+  RIL.NS: RELIANCE.NS
+  VOLCABC1: XVOLB.MC
+  VWAPY.DE: VWAPY
+  000858.HK: 000858.SZ
+  300274.HK: 300274.SZ
+  300751.HK: 300751.SZ
+  603806.HK: 603806.SS

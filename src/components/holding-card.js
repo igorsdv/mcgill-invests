@@ -1,3 +1,4 @@
+import { faChartLine, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import cn from 'classnames';
 import views from '../lib/views.js';
@@ -7,6 +8,19 @@ const $ = (value) =>
     style: 'currency',
     currency: 'CAD',
   });
+
+function YahooFinanceLink({ ticker, children }) {
+  return (
+    <a
+      href={`https://finance.yahoo.com/quote/${ticker}`}
+      className="hover:text-slate-400"
+      target="_blank"
+      rel="noreferrer"
+    >
+      {children}
+    </a>
+  );
+}
 
 export default function HoldingCard({ holding }) {
   const {
@@ -20,11 +34,21 @@ export default function HoldingCard({ holding }) {
 
   return (
     <div className="border-t w-full lg:w-1/2 lg:max-w-[40rem] p-3 border-t-gray-300 border-l-4 border-l-gray-200">
-      <h3 className="text-gray-800 font-bold">
+      <h3 className="line-clamp-1 text-gray-800 font-bold">
         {businessProfile.name.toUpperCase() || description1}
       </h3>
       <div className="text-gray-600 font-serif">
-        {ticker && <span>{ticker} · </span>}
+        {businessProfile.description && (
+          <>
+            <FontAwesomeIcon
+              icon={faChartLine}
+              fixedWidth
+              className="mr-1 align-middle"
+            />
+            <YahooFinanceLink ticker={ticker}>{ticker}</YahooFinanceLink>
+            {' · '}
+          </>
+        )}
         <span className="font-bold">{$(marketValue)}</span>
         <span> · {country}</span>
         {matchingViews.length > 0 && ' · '}
@@ -37,7 +61,16 @@ export default function HoldingCard({ holding }) {
             fixedWidth
           />
         ))}
-        <p className="line-clamp-3">{businessProfile.description}</p>
+        {businessProfile.description && (
+          <p className="line-clamp-3 leading-snug">
+            <FontAwesomeIcon
+              icon={faInfoCircle}
+              fixedWidth
+              className="mr-1 align-middle"
+            />
+            {businessProfile.description}
+          </p>
+        )}
       </div>
     </div>
   );

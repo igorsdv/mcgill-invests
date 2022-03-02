@@ -1,13 +1,16 @@
 import { createHash } from 'crypto';
+import { constants } from 'fs';
 import fs from 'fs/promises';
 import path from 'path';
 import util from 'util';
-import { flock as callbackFlock } from 'fs-ext';
+import { flock as callbackFlock, seek as callbackSeek } from 'fs-ext';
 
 const flock = util.promisify(callbackFlock);
+const seek = util.promisify(callbackSeek);
 
 export default {
   cacheDir: path.resolve('./.cache'),
+  queue: {},
 
   filePath(key) {
     const file = createHash('sha256')
@@ -20,37 +23,56 @@ export default {
     return [dir, file];
   },
 
-  async get(key) {
-    const file = path.join(...this.filePath(key));
-    const filehandle = await fs.open(file, 'r');
+  async acquire(key) {
+    if (this.queue[key]) {
+      return new Promise((resolve) => {
+        this.queue[key].push((filehandle) => resolve(filehandle));
+      });
+    }
 
-    await flock(filehandle.fd, 'sh');
+    this.queue[key] = [];
 
-    const value = await filehandle.readFile({ encoding: 'utf-8' });
-    await filehandle.close();
-
-    return JSON.parse(value);
-  },
-
-  async set(key, value) {
     const [dir, file] = this.filePath(key);
-
     await fs.mkdir(dir, { recursive: true });
 
-    const filehandle = await fs.open(path.join(dir, file), 'w');
+    const filehandle = await fs.open(
+      path.join(dir, file),
+      constants.O_RDWR | constants.O_CREAT
+    );
 
     await flock(filehandle.fd, 'ex');
 
-    await filehandle.writeFile(JSON.stringify(await value));
+    return filehandle;
+  },
+
+  async release(key, filehandle) {
+    const callback = this.queue[key].pop();
+
+    if (callback) {
+      return setImmediate(() => callback(filehandle));
+    }
+
+    delete this.queue[key];
     await filehandle.close();
   },
 
-  getOrFetch(key, fn) {
-    return this.get(key).catch(async () => {
+  async getOrFetch(key, fn) {
+    const filehandle = await this.acquire(key);
+
+    try {
+      await seek(filehandle.fd, 0, 0);
+      const value = await filehandle.readFile({ encoding: 'utf-8' });
+
+      return JSON.parse(value);
+    } catch {
       const value = fn();
-      await this.set(key, value);
+
+      await filehandle.truncate();
+      await filehandle.write(JSON.stringify(await value), 0);
 
       return value;
-    });
+    } finally {
+      await this.release(key, filehandle);
+    }
   },
 };
