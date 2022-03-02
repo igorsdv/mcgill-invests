@@ -3,53 +3,38 @@ import { getHoldings } from './holdings.js';
 import { getBusinessProfile } from './metadata.js';
 
 export async function getHoldingsByView(view) {
-  const holdings = (await getHoldings(view))
+  const holdings = (await getHoldings())
     .filter(
-      (holding) =>
-        holding.marketValue > 0 &&
-        !matchesView(holding, 'exclude') &&
-        (view === 'all' || matchesView(holding, view))
+      (holding) => holding.marketValue > 0 && !matchesView(holding, 'exclude')
     )
     .map(applyTransforms);
 
-  const keyedHoldings = holdings.reduce(
-    (result, holding) => {
-      let id = null;
+  const keyedHoldings = {};
+  const tickersByDescription = {};
 
-      if (result.descriptions[holding.description1] !== undefined) {
-        id = result.descriptions[holding.description1];
-      } else if (result.tickers[holding.ticker] !== undefined) {
-        id = result.tickers[holding.ticker];
-      }
+  for (const holding of holdings) {
+    const key =
+      tickersByDescription[holding.description1] ||
+      holding.ticker ||
+      '@' + holding.id;
 
-      if (id === null) {
-        result.ids[holding.id] = [holding];
-        result.descriptions[holding.description1] = holding.id;
+    tickersByDescription[holding.description1] = key;
 
-        if (holding.ticker) {
-          result.tickers[holding.ticker] = holding.id;
-        }
-      } else {
-        result.ids[id].push(holding);
-      }
+    keyedHoldings[key] = keyedHoldings[key] || [];
+    keyedHoldings[key].push(holding);
+  }
 
-      return result;
-    },
-    {
-      ids: {},
-      descriptions: {},
-      tickers: {},
-    }
-  );
-
-  return Object.values(keyedHoldings.ids)
+  return Object.values(keyedHoldings)
     .map((group) => ({
       ...group[0],
       marketValue: group.reduce((s, h) => s + h.marketValue, 0),
       matchingViews: getDefinedViews().filter((view) =>
-        matchesView(group[0], view)
+        group.some((h) => matchesView(h, view))
       ),
     }))
+    .filter(
+      ({ matchingViews }) => view === 'all' || matchingViews.includes(view)
+    )
     .sort((a, b) => b.marketValue - a.marketValue);
 }
 
