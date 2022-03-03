@@ -1,4 +1,5 @@
 import HoldingCard from '../../components/holding-card.js';
+import Pagination from '../../components/pagination.js';
 import { getHoldingsByView, hydrateMetadata } from '../../lib/api.js';
 import views from '../../lib/views.js';
 
@@ -7,10 +8,12 @@ const pageSize = 20;
 export default function View({ holdings, page, totalPages }) {
   return (
     <>
-      {holdings.map((holding, i) => (
-        <HoldingCard key={i} holding={holding} />
-      ))}
-      {`${page} of ${totalPages}`}
+      <div className="flex flex-wrap">
+        {holdings.map((holding, i) => (
+          <HoldingCard key={i} holding={holding} />
+        ))}
+      </div>
+      <Pagination page={page} totalPages={totalPages} />
     </>
   );
 }
@@ -18,7 +21,7 @@ export default function View({ holdings, page, totalPages }) {
 export async function getStaticProps({ params: { slug } }) {
   const [name, page] = slug;
 
-  const startIndex = ((page || 1) - 1) * pageSize;
+  const startIndex = ((+page || 1) - 1) * pageSize;
   const allHoldings = await getHoldingsByView(name);
   const holdings = allHoldings.slice(startIndex, startIndex + pageSize);
 
@@ -27,7 +30,7 @@ export async function getStaticProps({ params: { slug } }) {
   return {
     props: {
       holdings,
-      page: page || 1,
+      page: +page || 1,
       totalPages: Math.ceil(allHoldings.length / pageSize),
     },
   };
