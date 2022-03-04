@@ -169,20 +169,6 @@ alternative:
   description1:
     - IBERDROLA INTERNATIONAL BV
 
-banking:
-  assetType:
-    - BANKS
-    - BANKS - UK
-    - BANKS (CANADIAN)
-    - CONSUMER FINANCE - UK
-    - BANKING & FINANCE
-    - BANKS - COVERED (CANADIAN)
-    - BANKS (CANADIAN)
-    - PRIVATE PLACEMENTS - BANKING
-    - YANKEE BONDS - FINANCIAL
-    - PREFERRED SHARES (DEBT) FINANCIAL
-    - TRUST PREFERRED SHARES - FINANCIAL
-
 palestine:
   ticker:
     - AVGL

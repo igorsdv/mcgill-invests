@@ -32,10 +32,6 @@ export default {
     text: 'Alternative Energy',
     icon: faSun,
   },
-  banking: {
-    text: 'Banking & Financials',
-    icon: faCreditCard,
-  },
   palestine: {
     text: 'Palestine Occupation',
     icon: faFlag,

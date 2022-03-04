@@ -8,8 +8,8 @@ import {
   faIndustry,
   faInfoCircle,
 } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import views from '../lib/views.js';
+import { Icon } from './icons.js';
 
 function $(value) {
   return value.toLocaleString('en-CA', {
@@ -37,10 +37,9 @@ function ExternalLink({ href, children }) {
       rel="noreferrer"
     >
       {children}{' '}
-      <FontAwesomeIcon
+      <Icon
         icon={faExternalLinkAlt}
         className="inline-block align-baseline text-xs"
-        fixedWidth
       />
     </a>
   );
@@ -61,7 +60,7 @@ function Reserves({ metadata }) {
 
   return (
     <div className="mt-1 leading-snug font-serif">
-      <FontAwesomeIcon icon={faIndustry} className="text-red-900" fixedWidth />{' '}
+      <Icon icon={faIndustry} className="text-red-900" />{' '}
       <span className="font-bold">{total}</span> tons of CO<sub>2</sub> reserves
       ({description})
     </div>
@@ -95,7 +94,7 @@ export default function HoldingCard({ holding }) {
       <div className="text-slate-600 font-serif">
         {businessProfile.description && (
           <>
-            <FontAwesomeIcon icon={faChartLine} fixedWidth className="mr-1" />
+            <Icon icon={faChartLine} className="mr-1" />
             <ExternalLink href={`https://finance.yahoo.com/quote/${ticker}`}>
               {ticker}
             </ExternalLink>
@@ -107,39 +106,30 @@ export default function HoldingCard({ holding }) {
         <span className="text-gray-500">{country}</span>
         {matchingViews.length > 0 && ' · '}
         {matchingViews.map((view, i) => (
-          <FontAwesomeIcon
+          <Icon
             key={i}
             icon={views[view].icon}
             title={views[view].text}
             className={cn({ 'text-red-900': views[view].harmful })}
-            fixedWidth
           />
         ))}
       </div>
       {businessProfile.description && (
         <div className="mt-1 line-clamp-3 leading-snug text-slate-600 font-serif">
-          <FontAwesomeIcon
-            icon={faInfoCircle}
-            fixedWidth
-            className="mr-1 align-middle"
-          />
+          <Icon icon={faInfoCircle} className="mr-1 align-middle" />
           {businessProfile.description}
         </div>
       )}
       {metadata.note && (
         <div className="mt-1 leading-snug font-serif">
-          <FontAwesomeIcon
-            icon={faExclamationTriangle}
-            className="text-red-900"
-            fixedWidth
-          />
+          <Icon icon={faExclamationTriangle} className="text-red-900" />
           {' ' + metadata.note}
         </div>
       )}
       <Reserves metadata={metadata} />
       {metadata.news1 && (
         <div className="mt-1 leading-snug text-slate-600 font-serif">
-          <FontAwesomeIcon icon={faGlobe} fixedWidth />
+          <Icon icon={faGlobe} />
           {' In the news · '}
           <ExternalLink href={metadata.news1}>
             {extractHost(metadata.news1)}
@@ -156,11 +146,7 @@ export default function HoldingCard({ holding }) {
       )}
       {metadata.link && (
         <div className="mt-1 leading-snug text-slate-600 font-serif">
-          <FontAwesomeIcon
-            icon={faFolderOpen}
-            className="text-green-700"
-            fixedWidth
-          />
+          <Icon icon={faFolderOpen} className="text-green-700" />
           {' Divest McGill dossier · '}
           <ExternalLink href={metadata.link}>Google Drive</ExternalLink>
         </div>

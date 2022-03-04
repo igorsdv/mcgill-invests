@@ -3,7 +3,7 @@ import {
   getAllHoldings,
   getHoldingsByView,
   hydrateMetadata,
-} from '../../lib/api.js';
+} from '../../lib/holdings.js';
 import { chunk } from '../../lib/util.js';
 
 export default async function handler(req, res) {

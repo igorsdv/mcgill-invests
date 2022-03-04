@@ -3,10 +3,10 @@ import cn from 'classnames';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useMemo } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import useActiveView from '../hooks/use-active-view.js';
 import views from '../lib/views.js';
+import { Icon } from './icons.js';
 
 export default function Sidebar({ open, setOpen }) {
   const activeView = useActiveView();
@@ -38,7 +38,7 @@ export default function Sidebar({ open, setOpen }) {
           className="float-right md:hidden pt-[2px]"
           onClick={() => setOpen(!open)}
         >
-          <FontAwesomeIcon icon={faBars} fixedWidth />
+          <Icon icon={faBars} />
         </button>
         <h1 className="text-lg font-bold">
           <Link href="/">
@@ -61,7 +61,7 @@ export default function Sidebar({ open, setOpen }) {
               <Link href={`/view/${name}`}>
                 <a className="block lowercase" onClick={() => setOpen(false)}>
                   <span className="float-right">
-                    <FontAwesomeIcon icon={icon} fixedWidth />
+                    <Icon icon={icon} />
                   </span>
                   {text}
                 </a>

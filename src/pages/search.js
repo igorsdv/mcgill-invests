@@ -1,8 +1,7 @@
-import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import HoldingTable from '../components/holding-table.js';
+import { Spinner } from '../components/icons.js';
 import Pagination from '../components/pagination.js';
 
 export default function Search() {
@@ -25,7 +24,7 @@ export default function Search() {
   if (data === null) {
     return (
       <p>
-        <FontAwesomeIcon icon={faCircleNotch} className="fa-spin" fixedWidth />
+        <Spinner />
       </p>
     );
   }

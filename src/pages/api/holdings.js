@@ -1,4 +1,4 @@
-import { getHoldingsByView, hydrateMetadata } from '../../lib/api.js';
+import { getHoldingsByView, hydrateMetadata } from '../../lib/holdings.js';
 
 const pageSize = 24;
 

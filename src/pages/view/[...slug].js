@@ -1,6 +1,6 @@
 import HoldingTable from '../../components/holding-table.js';
 import Pagination from '../../components/pagination.js';
-import { getHoldingsByView, hydrateMetadata } from '../../lib/api.js';
+import { getHoldingsByView, hydrateMetadata } from '../../lib/holdings.js';
 import views from '../../lib/views.js';
 import useActiveView from '../../hooks/use-active-view.js';
 
