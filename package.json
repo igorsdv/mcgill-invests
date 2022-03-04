@@ -2,8 +2,8 @@
   "name": "@mcgill-invests/website",
   "private": true,
   "scripts": {
-    "dev": "NODE_OPTIONS='--inspect' next dev",
-    "build": "rm -rf .cache/ && next build",
+    "dev": "next dev",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
@@ -12,8 +12,11 @@
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
     "@fortawesome/react-fontawesome": "^0.1.16",
     "@next/env": "^12.0.9",
+    "@tailwindcss/forms": "^0.5.0",
+    "@tailwindcss/line-clamp": "^0.3.1",
     "autoprefixer": "^10.4.2",
     "classnames": "^2.3.1",
+    "debounce": "^1.2.1",
     "fs-ext": "^2.0.0",
     "googleapis": "^92.0.0",
     "next": "^12.0.9",

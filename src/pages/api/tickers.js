@@ -8,6 +8,10 @@ export default async function handler(req, res) {
     return res.status(405).send();
   }
 
+  if (req.headers.authorization !== `Bearer ${process.env.AUTH_TOKEN}`) {
+    return res.status(403).send();
+  }
+
   const raw = !!req.query.raw;
   const holdings = (
     await (raw ? getHoldings() : getHoldingsByView('all'))

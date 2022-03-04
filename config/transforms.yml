@@ -7,13 +7,13 @@ replace:
     - search: ' '
       replacement: ''
     - match:
+        country: [Canada, United States]
+      search: /|\.
+      replacement: '-'
+    - match:
         country: [Canada, Australia]
       search: ([A-Z]{2})CN$
       replacement: '$1.TO'
-    - match:
-        country: [Canada]
-      search: /
-      replacement: '-'
     - match:
         country: [Thailand, United Kingdom]
       search: /.*$

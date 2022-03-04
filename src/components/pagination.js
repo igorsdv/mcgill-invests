@@ -5,13 +5,10 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
-import useActiveView from '../hooks/use-active-view.js';
 
-function LinkOrSpan({ page, className, ...props }) {
-  const view = useActiveView();
-
-  return page ? (
-    <Link href={`/view/${view}` + (page === 1 ? '' : `/${page}`)}>
+function LinkOrSpan({ href, className, ...props }) {
+  return href ? (
+    <Link href={href}>
       <a className={className} {...props} />
     </Link>
   ) : (
@@ -19,15 +16,15 @@ function LinkOrSpan({ page, className, ...props }) {
   );
 }
 
-function PageLink({ page, active }) {
+function PageLink({ page, href }) {
   return (
     <LinkOrSpan
-      page={!active && page}
+      href={href}
       className={cn(
         'inline-flex items-center px-3 py-2 border text-sm font-medium',
         {
-          'z-10 bg-slate-200 border-slate-400 text-slate-700': active,
-          'bg-white border-gray-300 text-gray-500 hover:bg-slate-50': !active,
+          'bg-white border-gray-300 text-gray-500 hover:bg-slate-50': href,
+          'z-10 bg-slate-200 border-slate-400 text-slate-700': !href,
         }
       )}
     >
@@ -36,31 +33,42 @@ function PageLink({ page, active }) {
   );
 }
 
-export default function Pagination({ page, totalPages }) {
+function Ellipsis() {
+  return (
+    <span className="inline-flex items-center px-2 sm:px-3 py-2 cursor-default border border-gray-300 bg-white text-sm font-medium text-gray-700">
+      ...
+    </span>
+  );
+}
+
+export default function Pagination({ page, totalPages, getUrlForPage }) {
   const [start, end] = [
     page < 5 ? 1 : Math.min(page + 1, totalPages) - 2,
     totalPages < page + 4 ? totalPages : Math.max(1, page - 1) + 2,
   ];
 
   const components = [];
-  const ellipsis = (
-    <span className="inline-flex items-center px-2 sm:px-3 py-2 cursor-default border border-gray-300 bg-white text-sm font-medium text-gray-700">
-      ...
-    </span>
-  );
 
   if (start !== 1) {
-    components.push(<PageLink page={1} active={false} />);
-    components.push(ellipsis);
+    components.push(<PageLink key={1} page={1} href={getUrlForPage(1)} />);
+    components.push(<Ellipsis key="el1" />);
   }
 
   for (let i = start; i <= end; i++) {
-    components.push(<PageLink page={i} active={i === page} />);
+    components.push(
+      <PageLink key={i} page={i} href={i !== page && getUrlForPage(i)} />
+    );
   }
 
   if (end !== totalPages) {
-    components.push(ellipsis);
-    components.push(<PageLink page={totalPages} active={false} />);
+    components.push(<Ellipsis key="el2" />);
+    components.push(
+      <PageLink
+        key={totalPages}
+        page={totalPages}
+        href={getUrlForPage(totalPages)}
+      />
+    );
   }
 
   return (
@@ -68,7 +76,7 @@ export default function Pagination({ page, totalPages }) {
       <div className="flex-1 flex items-center justify-center">
         <nav className="z-0 inline-flex flex-wrap rounded-md shadow-sm -space-x-px">
           <LinkOrSpan
-            page={page > 1 && page - 1}
+            href={page > 1 && getUrlForPage(page - 1)}
             className={cn(
               'inline-flex items-center px-2 sm:px-3 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium',
               {
@@ -81,7 +89,7 @@ export default function Pagination({ page, totalPages }) {
           </LinkOrSpan>
           {components}
           <LinkOrSpan
-            page={page < totalPages && page + 1}
+            href={page < totalPages && getUrlForPage(page + 1)}
             className={cn(
               'inline-flex items-center px-2 sm:px-3 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500',
               {

@@ -1,5 +1,8 @@
+import debounce from 'debounce';
 import cn from 'classnames';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useEffect, useMemo } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import useActiveView from '../hooks/use-active-view.js';
@@ -7,6 +10,21 @@ import views from '../lib/views.js';
 
 export default function Sidebar({ open, setOpen }) {
   const activeView = useActiveView();
+  const router = useRouter();
+
+  const changeHandler = useMemo(
+    () =>
+      debounce(({ target: { value } }) => {
+        router.push(value === '' ? '/view/all' : `/search?q=${value}`);
+      }, 300),
+    [router]
+  );
+
+  useEffect(() => {
+    return () => {
+      changeHandler.clear();
+    };
+  }, [changeHandler]);
 
   return (
     <aside
@@ -49,6 +67,14 @@ export default function Sidebar({ open, setOpen }) {
           ))}
         </ul>
       </nav>
+      <form className="flex justify-center px-4 py-4">
+        <input
+          type="text"
+          placeholder="search..."
+          className="w-full rounded-md text-slate-800"
+          onChange={changeHandler}
+        />
+      </form>
     </aside>
   );
 }

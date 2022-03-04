@@ -1,19 +1,24 @@
-import HoldingCard from '../../components/holding-card.js';
+import HoldingTable from '../../components/holding-table.js';
 import Pagination from '../../components/pagination.js';
 import { getHoldingsByView, hydrateMetadata } from '../../lib/api.js';
 import views from '../../lib/views.js';
+import useActiveView from '../../hooks/use-active-view.js';
 
-const pageSize = 20;
+const pageSize = 24;
 
 export default function View({ holdings, page, totalPages }) {
+  const view = useActiveView();
+  const getUrlForPage = (page) =>
+    `/view/${view}` + (page === 1 ? '' : `/${page}`);
+
   return (
     <>
-      <div className="flex flex-wrap">
-        {holdings.map((holding, i) => (
-          <HoldingCard key={i} holding={holding} />
-        ))}
-      </div>
-      <Pagination page={page} totalPages={totalPages} />
+      <HoldingTable holdings={holdings} />
+      <Pagination
+        page={page}
+        totalPages={totalPages}
+        getUrlForPage={getUrlForPage}
+      />
     </>
   );
 }
