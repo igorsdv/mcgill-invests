@@ -1,12 +1,35 @@
 import { applyTransforms, getDefinedViews, matchesView } from './config.js';
 import { getHoldings, getMetadata, getBusinessProfile } from './holdings.js';
 
+export function getAllHoldings() {
+  return getHoldings();
+}
+
 export async function getHoldingsByView(view) {
   const holdings = (await getHoldings())
     .filter(
       (holding) => holding.marketValue > 0 && !matchesView(holding, 'exclude')
     )
-    .map(applyTransforms);
+    .map(
+      ({
+        id,
+        assetCategory,
+        assetType,
+        marketValue,
+        description1,
+        ticker,
+        country,
+      }) =>
+        applyTransforms({
+          id,
+          assetCategory,
+          assetType,
+          marketValue,
+          description1,
+          ticker,
+          country,
+        })
+    );
 
   const keyedHoldings = {};
   const tickersByDescription = {};

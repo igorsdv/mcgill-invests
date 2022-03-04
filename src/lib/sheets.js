@@ -66,6 +66,7 @@ export default {
       'Security Description 1': 'description1',
       'Security Description 2': 'description2',
       'Ticker': 'ticker',
+      'Cusip': 'cusip',
       'ISIN': 'isin',
       'Country of Issue Name': 'country',
       'Units': 'units',

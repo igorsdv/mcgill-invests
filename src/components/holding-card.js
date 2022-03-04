@@ -1,3 +1,4 @@
+import cn from 'classnames';
 import {
   faChartLine,
   faExclamationTriangle,
@@ -8,7 +9,6 @@ import {
   faInfoCircle,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import cn from 'classnames';
 import views from '../lib/views.js';
 
 function $(value) {
@@ -60,11 +60,11 @@ function Reserves({ metadata }) {
   const total = precisionRound(+oilGas + +coal, 3);
 
   return (
-    <p className="mt-1 leading-snug">
+    <div className="mt-1 leading-snug font-serif">
       <FontAwesomeIcon icon={faIndustry} className="text-red-900" fixedWidth />{' '}
       <span className="font-bold">{total}</span> tons of CO<sub>2</sub> reserves
       ({description})
-    </p>
+    </div>
   );
 }
 
@@ -117,28 +117,28 @@ export default function HoldingCard({ holding }) {
         ))}
       </div>
       {businessProfile.description && (
-        <p className="mt-1 line-clamp-3 leading-snug text-slate-600">
+        <div className="mt-1 line-clamp-3 leading-snug text-slate-600 font-serif">
           <FontAwesomeIcon
             icon={faInfoCircle}
             fixedWidth
             className="mr-1 align-middle"
           />
           {businessProfile.description}
-        </p>
+        </div>
       )}
       {metadata.note && (
-        <p className="mt-1 leading-snug">
+        <div className="mt-1 leading-snug font-serif">
           <FontAwesomeIcon
             icon={faExclamationTriangle}
             className="text-red-900"
             fixedWidth
           />
           {' ' + metadata.note}
-        </p>
+        </div>
       )}
       <Reserves metadata={metadata} />
       {metadata.news1 && (
-        <p className="mt-1 leading-snug text-slate-600">
+        <div className="mt-1 leading-snug text-slate-600 font-serif">
           <FontAwesomeIcon icon={faGlobe} fixedWidth />
           {' In the news · '}
           <ExternalLink href={metadata.news1}>
@@ -152,10 +152,10 @@ export default function HoldingCard({ holding }) {
               </ExternalLink>
             </>
           )}
-        </p>
+        </div>
       )}
       {metadata.link && (
-        <p className="mt-1 leading-snug text-slate-600">
+        <div className="mt-1 leading-snug text-slate-600 font-serif">
           <FontAwesomeIcon
             icon={faFolderOpen}
             className="text-green-700"
@@ -163,7 +163,7 @@ export default function HoldingCard({ holding }) {
           />
           {' Divest McGill dossier · '}
           <ExternalLink href={metadata.link}>Google Drive</ExternalLink>
-        </p>
+        </div>
       )}
     </div>
   );

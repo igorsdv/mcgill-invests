@@ -24,7 +24,7 @@ function PageLink({ page, href }) {
         'inline-flex items-center px-3 py-2 border text-sm font-medium',
         {
           'bg-white border-gray-300 text-gray-500 hover:bg-slate-50': href,
-          'z-10 bg-slate-200 border-slate-400 text-slate-700': !href,
+          'z-0 bg-slate-200 border-slate-400 text-slate-700': !href,
         }
       )}
     >
@@ -76,7 +76,7 @@ export default function Pagination({ page, totalPages, getUrlForPage }) {
   return (
     <div className="py-3">
       <div className="flex-1 flex items-center justify-center">
-        <nav className="z-0 inline-flex flex-wrap rounded-md shadow-sm -space-x-px">
+        <nav className="inline-flex flex-wrap rounded-md shadow-sm -space-x-px">
           <LinkOrSpan
             href={page > 1 && getUrlForPage(page - 1)}
             className={cn(

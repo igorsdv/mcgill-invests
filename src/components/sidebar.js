@@ -29,7 +29,7 @@ export default function Sidebar({ open, setOpen }) {
   return (
     <aside
       className={cn(
-        'fixed w-full md:w-80 md:h-screen overflow-y-auto text-slate-100 bg-slate-700',
+        'z-10 fixed w-full md:w-80 md:h-screen overflow-y-auto text-slate-100 bg-slate-700',
         { 'h-screen': open }
       )}
     >
@@ -51,9 +51,12 @@ export default function Sidebar({ open, setOpen }) {
           {Object.entries(views).map(([name, { text, icon }]) => (
             <li
               key={name}
-              className={cn('text-lg px-4 py-1', {
-                'text-slate-700 bg-slate-100': activeView === name,
-              })}
+              className={cn(
+                'text-lg px-4 py-1 hover:text-slate-700 hover:bg-slate-100',
+                {
+                  'text-slate-700 bg-slate-100': activeView === name,
+                }
+              )}
             >
               <Link href={`/view/${name}`}>
                 <a className="block lowercase" onClick={() => setOpen(false)}>
@@ -66,15 +69,29 @@ export default function Sidebar({ open, setOpen }) {
             </li>
           ))}
         </ul>
+        <form className="flex justify-center px-4 py-4">
+          <input
+            type="text"
+            placeholder="search..."
+            className="w-full rounded-md text-slate-800"
+            onChange={changeHandler}
+          />
+        </form>
+        <div className="px-4 text-center">
+          <a href="/api/csv" className="hover:underline">
+            download csv
+          </a>
+          {' · '}
+          <a
+            href="mailto:info@mcgillinvests.in"
+            target="_blank"
+            rel="noreferrer"
+            className="hover:underline"
+          >
+            email maintainers
+          </a>
+        </div>
       </nav>
-      <form className="flex justify-center px-4 py-4">
-        <input
-          type="text"
-          placeholder="search..."
-          className="w-full rounded-md text-slate-800"
-          onChange={changeHandler}
-        />
-      </form>
     </aside>
   );
 }

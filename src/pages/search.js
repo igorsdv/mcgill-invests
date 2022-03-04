@@ -26,7 +26,6 @@ export default function Search() {
     return (
       <p>
         <FontAwesomeIcon icon={faCircleNotch} className="fa-spin" fixedWidth />
-        {' Loading...'}
       </p>
     );
   }

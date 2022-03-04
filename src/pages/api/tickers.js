@@ -1,6 +1,9 @@
 import { appendFile, writeFile } from 'fs/promises';
-import { getHoldingsByView, hydrateMetadata } from '../../lib/api.js';
-import { getHoldings } from '../../lib/holdings.js';
+import {
+  getAllHoldings,
+  getHoldingsByView,
+  hydrateMetadata,
+} from '../../lib/api.js';
 import { chunk } from '../../lib/util.js';
 
 export default async function handler(req, res) {
@@ -14,7 +17,7 @@ export default async function handler(req, res) {
 
   const raw = !!req.query.raw;
   const holdings = (
-    await (raw ? getHoldings() : getHoldingsByView('all'))
+    await (raw ? getAllHoldings() : getHoldingsByView('all'))
   ).sort(
     (a, b) =>
       a.country.localeCompare(b.country) ||
