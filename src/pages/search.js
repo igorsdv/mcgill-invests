@@ -34,7 +34,7 @@ export default function Search() {
   const { holdings, totalPages } = data;
 
   if (holdings.length === 0) {
-    return 'No results.';
+    return <p>No results.</p>;
   }
 
   const getUrlForPage = (page) =>

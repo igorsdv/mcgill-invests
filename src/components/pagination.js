@@ -43,8 +43,10 @@ function Ellipsis() {
 
 export default function Pagination({ page, totalPages, getUrlForPage }) {
   const [start, end] = [
-    page < 5 ? 1 : Math.min(page + 1, totalPages) - 2,
-    totalPages < page + 4 ? totalPages : Math.max(1, page - 1) + 2,
+    totalPages < 6 || page < 5 ? 1 : Math.min(page + 1, totalPages) - 2,
+    totalPages < 6 || totalPages < page + 4
+      ? totalPages
+      : Math.max(1, page - 1) + 2,
   ];
 
   const components = [];

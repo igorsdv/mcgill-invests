@@ -91,6 +91,8 @@ export default {
       if (item.ticker) {
         output[item.ticker] = item;
       }
+
+      return output;
     }, {});
   },
 };

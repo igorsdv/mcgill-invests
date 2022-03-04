@@ -1,6 +1,5 @@
 import { applyTransforms, getDefinedViews, matchesView } from './config.js';
-import { getHoldings } from './holdings.js';
-import { getBusinessProfile } from './metadata.js';
+import { getHoldings, getMetadata, getBusinessProfile } from './holdings.js';
 
 export async function getHoldingsByView(view) {
   const holdings = (await getHoldings())
@@ -38,10 +37,15 @@ export async function getHoldingsByView(view) {
     .sort((a, b) => b.marketValue - a.marketValue);
 }
 
-export function hydrateMetadata(holdings) {
+export async function hydrateMetadata(holdings) {
+  const metadata = await getMetadata();
+
   return Promise.all(
     holdings.map(async (holding) => {
+      const ticker = (holding.ticker ?? '').split('.')[0];
+
       holding.businessProfile = await getBusinessProfile(holding);
+      holding.metadata = metadata[ticker] ?? {};
     })
   );
 }
