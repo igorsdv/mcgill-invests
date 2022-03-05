@@ -2,13 +2,18 @@ import yahooFinance from 'yahoo-finance2';
 import { applyTransforms, getDefinedViews, matchesView } from './config.js';
 import cache from './fs-cache.js';
 import sheets from './sheets.js';
+import { sumMarketValue } from './util.js';
 
-export function getHoldings() {
+export function getRawHoldings() {
   return cache.getOrFetch('holdings', () => sheets.getRaw());
 }
 
+export function getAllHoldings() {
+  return getHoldingsByView('all');
+}
+
 export async function getHoldingsByView(view) {
-  const holdings = (await getHoldings())
+  const holdings = (await getRawHoldings())
     .filter(
       (holding) => holding.marketValue > 0 && !matchesView(holding, 'exclude')
     )
@@ -51,7 +56,7 @@ export async function getHoldingsByView(view) {
   return Object.values(keyedHoldings)
     .map((group) => ({
       ...group[0],
-      marketValue: group.reduce((s, h) => s + h.marketValue, 0),
+      marketValue: sumMarketValue(group),
       matchingViews: getDefinedViews().filter((view) =>
         group.some((h) => matchesView(h, view))
       ),

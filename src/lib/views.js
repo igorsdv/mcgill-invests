@@ -1,5 +1,4 @@
 import {
-  faCreditCard,
   faFighterJet,
   faFlag,
   faList,

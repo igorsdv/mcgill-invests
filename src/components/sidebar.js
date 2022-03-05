@@ -78,6 +78,7 @@ export default function Sidebar({ open, setOpen }) {
           />
         </form>
         <div className="px-4 text-center">
+          {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
           <a href="/api/csv" className="hover:underline">
             download csv
           </a>

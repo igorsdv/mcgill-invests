@@ -1,5 +1,5 @@
 import { stringify } from 'csv-stringify/sync';
-import { getHoldings } from '../../lib/holdings.js';
+import { getRawHoldings } from '../../lib/holdings.js';
 
 export default async function handler(req, res) {
   const headers = [
@@ -16,7 +16,7 @@ export default async function handler(req, res) {
     'Country of Issue Name',
   ];
 
-  const holdings = (await getHoldings()).map(
+  const holdings = (await getRawHoldings()).map(
     ({
       account,
       assetCategory,

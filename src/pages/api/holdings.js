@@ -1,4 +1,4 @@
-import { getHoldingsByView, hydrateMetadata } from '../../lib/holdings.js';
+import { getAllHoldings, hydrateMetadata } from '../../lib/holdings.js';
 
 const pageSize = 24;
 
@@ -18,7 +18,7 @@ export default async function handler(req, res) {
     return res.status(200).json({ holdings: [], totalPages: 0 });
   }
 
-  const allHoldings = (await getHoldingsByView('all')).filter(
+  const allHoldings = (await getAllHoldings()).filter(
     ({ description1, ticker }) => {
       const tokens = [...splitTokens(description1), ...splitTokens(ticker)];
 

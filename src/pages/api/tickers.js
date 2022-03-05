@@ -1,7 +1,7 @@
 import { appendFile, writeFile } from 'fs/promises';
 import {
+  getRawHoldings,
   getAllHoldings,
-  getHoldingsByView,
   hydrateMetadata,
 } from '../../lib/holdings.js';
 import { chunk } from '../../lib/util.js';
@@ -16,9 +16,7 @@ export default async function handler(req, res) {
   }
 
   const raw = !!req.query.raw;
-  const holdings = (
-    await (raw ? getAllHoldings() : getHoldingsByView('all'))
-  ).sort(
+  const holdings = (await (raw ? getRawHoldings() : getAllHoldings())).sort(
     (a, b) =>
       a.country.localeCompare(b.country) ||
       a.description1.localeCompare(b.description1)

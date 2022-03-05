@@ -4,7 +4,7 @@ replace:
       replacement: ''
 
   ticker:
-    - search: ' '
+    - search: ' +'
       replacement: ''
     - match:
         country: [Canada, United States]
@@ -106,6 +106,7 @@ tickerMap:
   LYC.KL: LYC.AX
   NESNVX: NESN.SW
   POG.ME: POGR.ME
+  RDSA.AS: SHELL.AS
   RIL.NS: RELIANCE.NS
   TCN.TO: T.TO
   VOLCABC1: XVOLB.MC

@@ -7,3 +7,14 @@ export function chunk(arr, chunkSize) {
 
   return result;
 }
+
+export function sumMarketValue(objects) {
+  return objects.reduce((s, h) => s + h.marketValue, 0);
+}
+
+export function formatCurrency(value) {
+  return value.toLocaleString('en-CA', {
+    style: 'currency',
+    currency: 'CAD',
+  });
+}

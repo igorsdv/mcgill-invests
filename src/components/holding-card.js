@@ -8,15 +8,9 @@ import {
   faIndustry,
   faInfoCircle,
 } from '@fortawesome/free-solid-svg-icons';
+import { formatCurrency } from '../lib/util.js';
 import views from '../lib/views.js';
 import { Icon } from './icons.js';
-
-function $(value) {
-  return value.toLocaleString('en-CA', {
-    style: 'currency',
-    currency: 'CAD',
-  });
-}
 
 function precisionRound(number, precision) {
   const factor = Math.pow(10, precision);
@@ -101,7 +95,9 @@ export default function HoldingCard({ holding }) {
             {' · '}
           </>
         )}
-        <span className="font-bold text-slate-700">{$(marketValue)}</span>
+        <span className="font-bold text-slate-700">
+          {formatCurrency(marketValue)}
+        </span>
         {' · '}
         <span className="text-gray-500">{country}</span>
         {matchingViews.length > 0 && ' · '}
