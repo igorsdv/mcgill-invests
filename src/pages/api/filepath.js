@@ -5,12 +5,23 @@ export default async function handler(req, res) {
     return res.status(403).send();
   }
 
-  const params = new URL(req.url, `http://${req.headers.host}`).searchParams;
-  const q = params.get('q') ?? '';
+  if (!['GET', 'DELETE'].includes(req.method)) {
+    return res.status(405).send();
+  }
 
-  if (q === '') {
+  const params = new URL(req.url, `http://${req.headers.host}`).searchParams;
+  const key = params.get('key') ?? '';
+
+  if (key === '') {
     return res.status(400).send();
   }
 
-  res.status(200).json({ key: fsCache.filePath(q)[1] });
+  const hash = fsCache.getFilePath(key)[1];
+
+  if (req.method === 'DELETE') {
+    await fsCache.delete(key);
+    res.status(200).send(`Deleted cache entry: ${hash}`);
+  } else {
+    res.status(200).send(hash);
+  }
 }

@@ -61,7 +61,7 @@ export default function Index({
         loader={<Spinner className="mt-4" />}
       />
       <p className="mb-4">
-        Peruse the categories in the sidebar, or take a look at one of the
+        Browse the categories in the sidebar, or take a look at one of the
         following companies:
       </p>
       <div className="font-sans mb-4">

@@ -12,7 +12,7 @@ export default {
   cacheDir: path.resolve('./.cache'),
   queue: {},
 
-  filePath(key) {
+  getFilePath(key) {
     const file = createHash('sha256')
       .update(key, 'utf-8')
       .digest()
@@ -32,7 +32,7 @@ export default {
 
     this.queue[key] = [];
 
-    const [dir, file] = this.filePath(key);
+    const [dir, file] = this.getFilePath(key);
     await fs.mkdir(dir, { recursive: true });
 
     const filehandle = await fs.open(
@@ -74,5 +74,9 @@ export default {
     } finally {
       await this.release(key, filehandle);
     }
+  },
+
+  delete(key) {
+    return fs.rm(path.join(...this.getFilePath(key)), { force: true });
   },
 };
